@@ -31,3 +31,26 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# ============================================================================
+# ARCHIVOS DE CONFIGURACIÓN SENSIBLES
+# ============================================================================
+
+# Variables de entorno (CRÍTICO - NUNCA SUBIR)
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+
+# ============================================================================
+# LOGS
+# ============================================================================
+
+# Directorio de logs
+logs/
+*.log
+*.log.*
+
+# Logs de Spring Boot
+spring.log
