@@ -428,6 +428,153 @@ CAMUNDA_REST_ADDRESS=http://localhost:8088
 
 **Detener la aplicación:** Presiona `Ctrl+C`
 
+
+### Paso 5: Configurar .gitignore
+
+Es **crítico** que el archivo `.env` NO se suba a Git, ya que contiene información sensible como credenciales y configuraciones de entorno.
+
+Abre `.gitignore` (en la raíz del proyecto) y añade las siguientes reglas:
+
+```gitignore
+HELP.md  
+target/  
+.mvn/wrapper/maven-wrapper.jar  
+!**/src/main/**/target/  
+!**/src/test/**/target/  
+  
+### STS ###  
+.apt_generated  
+.classpath  
+.factorypath  
+.project  
+.settings  
+.springBeans  
+.sts4-cache  
+  
+### IntelliJ IDEA ###  
+.idea  
+*.iws  
+*.iml  
+*.ipr  
+  
+### NetBeans ###  
+/nbproject/private/  
+/nbbuild/  
+/dist/  
+/nbdist/  
+/.nb-gradle/  
+build/  
+!**/src/main/**/build/  
+!**/src/test/**/build/  
+  
+### VS Code ###  
+.vscode/  
+  
+# ============================================================================  
+# ARCHIVOS DE CONFIGURACIÓN SENSIBLES  
+# ============================================================================  
+  
+# Variables de entorno (CRÍTICO - NUNCA SUBIR)  
+.env  
+.env.local  
+.env.*.local  
+.env.development  
+.env.production  
+  
+# ============================================================================  
+# LOGS  
+# ============================================================================  
+  
+# Directorio de logs  
+logs/  
+*.log  
+*.log.*  
+  
+# Logs de Spring Boot  
+spring.log
+```
+
+Es una buena práctica crear un archivo **plantilla** que SÍ se suba a Git:
+
+```bash
+# Crear plantilla de ejemplo
+touch .env.example
+```
+
+Contenido de `.env.example`:
+```bash
+# ============================================================================
+# VARIABLES DE ENTORNO - PLANTILLA
+# ============================================================================
+# ⚠️ INSTRUCCIONES:
+# 1. Copiar este archivo a .env: cp .env.example .env
+# 2. Rellenar con valores reales
+# 3. NUNCA commitear el archivo .env
+
+# ----------------------------------------------------------------------------
+# CAMUNDA 8.8.4 SELF-MANAGED
+# ----------------------------------------------------------------------------
+CAMUNDA_GRPC_ADDRESS=http://localhost:26500
+CAMUNDA_REST_ADDRESS=http://localhost:8080
+
+# ----------------------------------------------------------------------------
+# SERVIDOR DE LA APLICACIÓN
+# ----------------------------------------------------------------------------
+SERVER_PORT=8090
+
+# ----------------------------------------------------------------------------
+# SPRING PROFILE
+# ----------------------------------------------------------------------------
+SPRING_PROFILES_ACTIVE=dev
+
+# ----------------------------------------------------------------------------
+# TIMEZONE
+# ----------------------------------------------------------------------------
+TZ=UTC
+```
+
+Commitear .env.example:
+
+```bash
+git add .env.example 
+git commit -m "Añadido plantilla .env.example"
+```
+
+
+### Paso 6: Documentar para el Equipo
+
+Crea un archivo `CONFIGURACION.md` en la raíz del proyecto:
+
+```md
+# Configuración del Proyecto 
+
+## Variables de Entorno 
+
+Este proyecto usa variables de entorno para configuración sensible. 
+
+### Setup Inicial 
+
+1. Copiar el archivo de ejemplo: 
+   
+   cp .env.example .env 
+
+1. Editar `.env` con los valores correctos para tu entorno 
+   
+2. **NUNCA** commitear el archivo `.env` 
+   
+### Variables Requeridas 
+
+- `CAMUNDA_GRPC_ADDRESS`: Dirección del servidor gRPC de Camunda 
+- `CAMUNDA_REST_ADDRESS`: Dirección de la API REST de Camunda 
+- `SERVER_PORT`: Puerto donde correrá la aplicación 
+- `SPRING_PROFILES_ACTIVE`: Profile de Spring (dev, prod) 
+  
+### Verificar Configuración 
+
+# Verificar que las variables están cargadas 
+echo $CAMUNDA_GRPC_ADDRESS
+```
+
 ---
 
 ## Primera Iteración: Worker Mínimo
