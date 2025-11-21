@@ -1,0 +1,74 @@
+# ============================================================================
+# CONFIGURACIÓN BÁSICA
+# ============================================================================
+spring:
+  application:
+    name: camunda-workers
+
+# ============================================================================
+# CAMUNDA 8.8.4 SELF-MANAGED (CONFIGURACIÓN MÍNIMA)
+# ============================================================================
+camunda:
+  client:
+    mode: self-managed
+    grpc-address: ${CAMUNDA_GRPC_ADDRESS:http://localhost:26500}
+    rest-address: ${CAMUNDA_REST_ADDRESS:http://localhost:8080}
+    auth:
+      method: none
+    worker:
+      defaults:
+        max-jobs-active: 64
+        timeout: PT1M           # 1 minuto
+        request-timeout: PT30S  # 30 segundos
+        stream-enabled: true
+
+# ============================================================================
+# ACTUATOR
+# ============================================================================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+# ============================================================================
+# LOGGING
+# ============================================================================
+logging:
+  level:
+    root: INFO
+    com.ejemplo.camunda: DEBUG
+    io.camunda: INFO
+
+# ============================================================================
+# SERVIDOR
+# ============================================================================
+server:
+  port: 8090
+
+---
+# ============================================================================
+# PROFILE: DEV
+# ============================================================================
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+logging:
+  level:
+    com.ejemplo.camunda: DEBUG
+
+---
+# ============================================================================
+# PROFILE: PROD
+# ============================================================================
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+logging:
+  level:
+    root: WARN
+    com.ejemplo.camunda: INFO
